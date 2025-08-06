@@ -5,7 +5,7 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("MD5AndDES")
+@Service("SHA256AndAES")
 public class SHA256AndAESEncryptorServiceImpl implements EncryptorService {
 
   @Autowired
@@ -23,7 +23,7 @@ public class SHA256AndAESEncryptorServiceImpl implements EncryptorService {
           "Encrypted Password: " + encryptedPassword + "\n");
 
       response.setEncryptedSecret(encryptedPassword);
-      response.setAlgorithm("MD5AndDES");
+      response.setAlgorithm("SHA256AndAES");
 
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -44,7 +44,7 @@ public class SHA256AndAESEncryptorServiceImpl implements EncryptorService {
           + decryptedPassword + "\n");
 
       response.setPlainTextSecret(decryptedPassword);
-      response.setAlgorithm("MD5AndDES");
+      response.setAlgorithm("SHA256AndAES");
 
     } catch (Exception ex) {
       ex.printStackTrace();
