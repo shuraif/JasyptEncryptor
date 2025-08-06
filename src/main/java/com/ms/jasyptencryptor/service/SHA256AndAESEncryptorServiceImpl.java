@@ -1,36 +1,30 @@
 package com.ms.jasyptencryptor.service;
 
 import com.ms.jasyptencryptor.modal.response.EncryptionResponse;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.springframework.beans.factory.annotation.Value;
+import org.jasypt.encryption.StringEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("SHA256AndAES")
+@Service("MD5AndDES")
 public class SHA256AndAESEncryptorServiceImpl implements EncryptorService {
 
-
-  private static String JASYPT_ENCRYPTION_ALGORITHM = "PBEWithMD5AndDES";
-
-  @Value("${jasypt.encryptor.password}")
-  private String encryptorPassword;
-
+  @Autowired
+  private StringEncryptor jasyptStringEncryptor;
 
   @Override
-  public EncryptionResponse encrypt(String planTextsecret) {
-
+  public EncryptionResponse encrypt(String plainTextSecret) {
+    String encryptedPassword = "";
     EncryptionResponse response = new EncryptionResponse();
+
     try {
 
-      StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-      encryptor.setPassword(encryptorPassword);
-      encryptor.setAlgorithm(JASYPT_ENCRYPTION_ALGORITHM);
-
-      String encryptedPassword = encryptor.encrypt(planTextsecret);
-      System.out.println("Original Password:" + planTextsecret + " | " + "Encrypted Password:"
-          + encryptedPassword + "\n");
+      encryptedPassword = jasyptStringEncryptor.encrypt(plainTextSecret);
+      System.out.println("Original Password: " + plainTextSecret + " | " +
+          "Encrypted Password: " + encryptedPassword + "\n");
 
       response.setEncryptedSecret(encryptedPassword);
-      response.setAlgorithm("SHA256AndAES");
+      response.setAlgorithm("MD5AndDES");
+
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -41,21 +35,23 @@ public class SHA256AndAESEncryptorServiceImpl implements EncryptorService {
   public EncryptionResponse decrypt(String encryptedSecret) {
 
     EncryptionResponse response = new EncryptionResponse();
+    String decryptedPassword = "";
+
     try {
 
-      StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-      encryptor.setPassword(encryptorPassword);
-      encryptor.setAlgorithm(JASYPT_ENCRYPTION_ALGORITHM);
-
-      String decryptedPassword = encryptor.decrypt(encryptedSecret);
-      System.out.println("Original Password:" + encryptedSecret + " | " + "decrypted Password:"
+      decryptedPassword = jasyptStringEncryptor.decrypt(encryptedSecret);
+      System.out.println("Original Password:" + encryptedSecret + " | " + "Encrypted Password:"
           + decryptedPassword + "\n");
 
       response.setPlainTextSecret(decryptedPassword);
-      response.setAlgorithm("SHA256AndAES");
+      response.setAlgorithm("MD5AndDES");
+
     } catch (Exception ex) {
       ex.printStackTrace();
     }
     return response;
+
   }
+
 }
+
