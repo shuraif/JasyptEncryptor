@@ -5,7 +5,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service("SHA256AndAES")
+@Service("MD5AndDES")
 public class MD5AndDESEncryptorServiceImpl implements EncryptorService {
 
 
@@ -30,7 +30,7 @@ public class MD5AndDESEncryptorServiceImpl implements EncryptorService {
           + encryptedPassword + "\n");
 
       response.setEncryptedSecret(encryptedPassword);
-      response.setAlgorithm("SHA256AndAES");
+      response.setAlgorithm("MD5AndDES");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -52,7 +52,7 @@ public class MD5AndDESEncryptorServiceImpl implements EncryptorService {
           + decryptedPassword + "\n");
 
       response.setPlainTextSecret(decryptedPassword);
-      response.setAlgorithm("SHA256AndAES");
+      response.setAlgorithm("MD5AndDES");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
